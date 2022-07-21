@@ -8,22 +8,20 @@ public class Solution {
             for(var col = 0; col < cols; col++)
             {
                 if (obstacleGrid[row][col] == 1) {
-                    obstacleGrid[row][col] = -1;
+                    obstacleGrid[row][col] = 0;
                     continue;
                 }
                 if (row == 0) {
-                    obstacleGrid[row][col] = col > 0 && obstacleGrid[row][col - 1] < 0 ? -1 : 1;
+                    obstacleGrid[row][col] = col > 0 && obstacleGrid[row][col - 1] == 0 ? 0 : 1;
                     continue;
                 }
                 if (col == 0) {
-                    obstacleGrid[row][col] = row > 0 && obstacleGrid[row - 1][col] < 0 ? -1 : 1;
+                    obstacleGrid[row][col] = row > 0 && obstacleGrid[row - 1][col] == 0 ? 0 : 1;
                     continue;
                 }
-                var top = obstacleGrid[row - 1][col] < 0 ? 0 : obstacleGrid[row - 1][col];
-                var left = obstacleGrid[row][col - 1] < 0 ? 0 : obstacleGrid[row][col - 1];
-                obstacleGrid[row][col] = top + left;
+                obstacleGrid[row][col] = obstacleGrid[row - 1][col] + obstacleGrid[row][col - 1];
             }
         }
-        return obstacleGrid[rows - 1][cols - 1] < 0 ? 0 : obstacleGrid[rows - 1][cols - 1];
+        return obstacleGrid[rows - 1][cols - 1];
     }
 }
