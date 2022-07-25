@@ -1,41 +1,35 @@
 public class Solution {
-    ISet<int> colSet = new HashSet<int>();
-    ISet<int> rowSet = new HashSet<int>();
     public void SetZeroes(int[][] matrix) {
-        for (var row = 0; row < matrix.Length; row++)
-        {
-            for (var col = 0; col < matrix[0].Length; col++)
-            {
-                if (!rowSet.Contains(row) && !colSet.Contains(col) && matrix[row][col] == 0)
+        var isColZero = false;
+        var isRowZero = false;
+        for (var row = 0; row < matrix.Length; row++) {
+            for (var col = 0; col < matrix[0].Length; col++) {
+                if (row == 0 && matrix[row][col] == 0)
                 {
-                    rowSet.Add(row);
-                    colSet.Add(col);
-                    ProcessZeroEncounterCol(matrix, col);
-                    ProcessZeroEncounterRow(matrix, row);
+                    isRowZero = true;
+                    continue;
+                }
+                if (col == 0 && matrix[row][col] == 0)
+                {
+                    isColZero = true;
+                    continue;
+                }
+                if (matrix[row][col] == 0) {
+                    matrix[0][col] = 0;
+                    matrix[row][0] = 0;
                 }
             }
         }
-    }
-    
-    private void ProcessZeroEncounterCol(int[][] matrix, int zeroCol)
-    {
-        for (var row = 0; row < matrix.Length; row++) {
-            if (!rowSet.Contains(row) && matrix[row][zeroCol] == 0) {
-                rowSet.Add(row);
-                ProcessZeroEncounterRow(matrix, row);
-            }
-            matrix[row][zeroCol] = 0;
-        }
-    }
 
-    private void ProcessZeroEncounterRow(int[][] matrix, int zeroRow)
-    {
-        for (var col = 0; col < matrix[0].Length; col++) {
-            if (!colSet.Contains(col) && matrix[zeroRow][col] == 0) {
-                colSet.Add(col);
-                ProcessZeroEncounterCol(matrix, col);
+        for (var row = matrix.Length - 1; row >= 0; row--)
+        {
+            for (var col = matrix[0].Length - 1; col >= 0; col--)
+            {
+                if (matrix[0][col] == 0 || matrix[row][0] == 0)
+                    matrix[row][col] = 0;
+                if((col == 0 && isColZero) || (row == 0 && isRowZero))
+                    matrix[row][col] = 0;
             }
-            matrix[zeroRow][col] = 0;
         }
     }
 }
