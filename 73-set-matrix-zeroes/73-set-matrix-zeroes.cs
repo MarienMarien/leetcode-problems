@@ -10,8 +10,8 @@ public class Solution {
                 {
                     rowSet.Add(row);
                     colSet.Add(col);
-                    ProcessZeroEncounterCol(matrix, col);// rem row
-                    ProcessZeroEncounterRow(matrix, row);// rem col
+                    ProcessZeroEncounterCol(matrix, col);
+                    ProcessZeroEncounterRow(matrix, row);
                 }
             }
         }
