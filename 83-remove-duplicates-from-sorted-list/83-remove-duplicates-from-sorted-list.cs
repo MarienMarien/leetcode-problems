@@ -14,16 +14,12 @@ public class Solution {
         if (head == null || head.next == null)
             return head;
         var root = head;
-        var prevItem = head;
-        head = head.next;
-        while (head != null) {
-            if (head.val == prevItem.val) {
-                prevItem.next = head.next;
+        while (head != null && head.next != null)
+        {
+            if (head.next.val == head.val)
+                head.next = head.next.next;
+            else
                 head = head.next;
-                continue;
-            }
-            prevItem = head;
-            head = head.next;
         }
         return root;
     }
