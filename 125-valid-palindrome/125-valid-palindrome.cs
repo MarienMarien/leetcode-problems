@@ -5,12 +5,13 @@ public class Solution {
         var start = 0;
         var end = s.Length - 1;
         while (start <= end) {
-            if (!char.IsLetter(s[start]) && !char.IsDigit(s[start]))
+            if (!char.IsLetterOrDigit(s[start]))
             {
                 start++;
                 continue;
             }
-            if (!char.IsLetter(s[end]) && !char.IsDigit(s[end])) {
+            if (!char.IsLetterOrDigit(s[end])) 
+            {
                 end--;
                 continue;
             }
