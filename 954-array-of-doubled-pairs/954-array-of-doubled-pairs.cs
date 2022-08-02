@@ -4,7 +4,7 @@ public class Solution {
         if (arr.Length % 2 != 0) {
             return res;
         }
-        arr = arr.OrderBy(x => Math.Abs(x)).ToArray();
+        Array.Sort(arr, Comparer<int>.Create((x, y) => { return Math.Abs(x).CompareTo(Math.Abs(y)); }));
         var complementaries = new Dictionary<int, int>();
         for (var i = 0; i < arr.Length; i++) {
             if (complementaries.ContainsKey(arr[i]) && complementaries[arr[i]] > 0)
