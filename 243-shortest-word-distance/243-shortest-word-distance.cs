@@ -1,36 +1,16 @@
 public class Solution {
     public int ShortestDistance(string[] wordsDict, string word1, string word2) {
-        string firstWord = null;
-        var distance = Int32.MaxValue;
-        var currDistance = 0;
+        var w1i = -1;
+        var w2i = -1;
+        var res = wordsDict.Length;
         for (var i = 0; i < wordsDict.Length; i++) {
-            if (firstWord == null) {
-                if (wordsDict[i] == word1)
-                {
-                    firstWord = word1;
-                    currDistance++;
-                }
-                if (wordsDict[i] == word2)
-                {
-                    firstWord = word2;
-                    currDistance++;
-                }
-                continue;
-            }
-            if (wordsDict[i] == word1 || wordsDict[i] == word2) {
-                if (wordsDict[i] == firstWord)
-                {
-                    currDistance = 0;
-                }
-                else {
-                    distance = Math.Min(distance, currDistance);
-                    firstWord = wordsDict[i];
-                    currDistance = 0;
-                }
-            }
-            currDistance++;
+            if (wordsDict[i].Equals(word1))
+                w1i = i;
+            if (wordsDict[i].Equals(word2))
+                w2i = i;
+            if (w1i > -1 && w2i > -1)
+                res = Math.Min(res, Math.Abs(w1i - w2i));
         }
-
-        return distance;
+        return res;
     }
 }
