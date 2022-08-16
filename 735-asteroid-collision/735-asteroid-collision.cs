@@ -17,7 +17,7 @@ public class Solution {
             var toDel = currAst;
             if (Math.Abs(prev.Value) > Math.Abs(currAst.Value)) {
 
-                currAst = currAst.Next;// check if I can do it
+                currAst = currAst.Next;
                 list.Remove(toDel);
                 continue;
             }
