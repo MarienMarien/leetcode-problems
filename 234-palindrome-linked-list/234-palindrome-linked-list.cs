@@ -12,42 +12,46 @@
 public class Solution {
     public bool IsPalindrome(ListNode head) {
          if (head == null || head.next == null)
-                return true;
-            ListNode center = GetSecondPartStart(head);
-            var reverced = ReverseList(center.next);
-            var res = true;
-            var start = head;
-            var end = reverced;
-            while (res && end != null)
-            {
-                if (start.val != end.val) res = false;
-                start = start.next;
-                end = end.next;
-            }
-            center.next = ReverseList(reverced);
-
-            return res;
+            return true;
+        //fast-slow find center
+        ListNode center = GetSecondPartStart(head);
+        // reverce second half in-place
+        var reverced = ReverseList(center.next);
+        // check if equal
+        var res = true;
+        var start = head;
+        var end = reverced;
+        while (res && end != null)
+        {
+            if (start.val != end.val) res = false;
+            start = start.next;
+            end = end.next;
         }
+        // restore second half(good practice)
+        center.next = ReverseList(reverced);
 
-        public static ListNode GetSecondPartStart(ListNode node) {
-            ListNode fast = node;
-            ListNode slow = node;
-            while (fast.next != null && fast.next.next != null) {
-                slow = slow.next;
-                fast = fast.next.next;
-            }
-            return slow;
+        return res;
+    }
+
+    public static ListNode GetSecondPartStart(ListNode node) {
+        ListNode fast = node;
+        ListNode slow = node;
+        while (fast.next != null && fast.next.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
         }
-        public static ListNode ReverseList(ListNode node) {
-            var curr = node;
-            var head = node;
-            ListNode prev = null;
-            while (head != null) {
-                head = head.next;
-                curr.next = prev;
-                prev = curr;
-                curr = head;
-            }
-            return prev;
+        return slow;
+    }
+    public static ListNode ReverseList(ListNode node) {
+        var curr = node;
+        var head = node;
+        ListNode prev = null;
+        while (head != null) {
+            head = head.next;
+            curr.next = prev;
+            prev = curr;
+            curr = head;
+        }
+        return prev;
     }
 }
