@@ -11,12 +11,7 @@ public class Solution {
 
         for (var i = 0; i < candies.Length; i++)
         {
-            if (withExtra[i] >= maxCandies)
-            {
-                res.Add(true);
-            }
-            else
-                res.Add(false);
+            res.Add(withExtra[i] >= maxCandies);
         }
 
         return res;
