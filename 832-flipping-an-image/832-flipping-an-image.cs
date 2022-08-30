@@ -6,13 +6,13 @@ public class Solution {
             while (start <= end) {
                 if (start == end)
                 {
-                    image[row][start] = (int)Math.Ceiling((image[row][start] + 1) % 2.0);
+                    image[row][start] = image[row][start] ^ 1;
                 }
                 else{
                     var left = image[row][start];
                     var right = image[row][end];
-                    image[row][start] = (int)Math.Ceiling((right + 1) % 2.0);
-                    image[row][end] = (int)Math.Ceiling((left + 1) % 2.0);
+                    image[row][start] = right ^ 1;
+                    image[row][end] = left ^ 1;
                 }
                 start++;
                 end--;
