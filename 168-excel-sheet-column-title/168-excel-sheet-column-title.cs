@@ -1,25 +1,20 @@
 public class Solution {
     public string ConvertToTitle(int columnNumber) {
         var sb = new StringBuilder();
-        var curr = columnNumber;
-        while (curr > 26)
+        while (columnNumber > 0)
         {
-            curr -= 1;
-            var newCurr = curr / 26;
-            var letter = Convert.ToChar(curr - (newCurr * 26) + 'A');
-            sb.Append(letter);
-            curr = newCurr;
+            var rem = columnNumber % 26;
+            if (rem == 0)
+            {
+                sb.Insert(0, 'Z');
+                columnNumber = (columnNumber / 26) - 1;
+            }
+            else {
+                sb.Insert(0, Convert.ToChar((rem - 1) + 'A'));
+                columnNumber /= 26;
+            }
         }
-        sb.Append(Convert.ToChar(curr - 1 + 'A'));
 
-        int start = 0, end = sb.Length - 1;
-        while (start < end) {
-            var tmp = sb[start];
-            sb[start] = sb[end];
-            sb[end] = tmp;
-            start++;
-            end--;
-        }
         return sb.ToString();
     }
 }
