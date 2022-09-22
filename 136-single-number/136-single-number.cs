@@ -1,12 +1,9 @@
 public class Solution {
     public int SingleNumber(int[] nums) {
-        var set = new HashSet<int>();
+        var res = 0;
         foreach (var n in nums) {
-            if (set.Contains(n))
-                set.Remove(n); 
-            else
-                set.Add(n);
+            res ^= n;
         }
-        return set.First();
+        return res;
     }
 }
