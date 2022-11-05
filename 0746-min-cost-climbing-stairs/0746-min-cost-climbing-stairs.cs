@@ -8,7 +8,6 @@ public class Solution {
         for (var i = 2; i < stairCosts.Length; i++) {
             var currCost = i < cost.Length ? cost[i] : stairCosts[i];
             stairCosts[i] = Math.Min(stairCosts[i - 1] + currCost, stairCosts[i - 2] + currCost);
-            Console.WriteLine($"i: {i}; cost: {stairCosts[i]}");
         }
         return stairCosts[stairCosts.Length - 1];
     }
