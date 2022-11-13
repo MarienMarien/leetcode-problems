@@ -32,7 +32,6 @@ public class Solution {
         if (root == null)
             return false;
         stack.Push(root);
-        Console.Write($"{root.val} ");
         if (root == q)
             return true;
         var found = FoundSecondPath(root.left, q, stack);
