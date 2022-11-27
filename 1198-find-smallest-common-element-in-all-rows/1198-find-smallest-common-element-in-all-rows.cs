@@ -12,7 +12,7 @@ public class Solution {
                         return mat[row][col];
                     set[mat[row][col]]++;
                 }
-                else {
+                else if (row == 0){
                     set.Add(mat[row][col], 0);
                 }
             }
