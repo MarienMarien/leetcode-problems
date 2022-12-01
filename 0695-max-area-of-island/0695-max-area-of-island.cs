@@ -12,7 +12,7 @@ public class Solution {
         return area;
     }
 
-    private static int GetIslandArea(int[][] grid, int row, int col)
+    private int GetIslandArea(int[][] grid, int row, int col)
     {
         if (row < 0 || row >= grid.Length || col < 0 || col >= grid[0].Length || grid[row][col] == 0)
             return 0;
