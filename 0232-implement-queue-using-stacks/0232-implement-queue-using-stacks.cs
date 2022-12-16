@@ -1,39 +1,57 @@
 public class MyQueue {
-
-    private Stack<int> _stack1;
-    private Stack<int> _stack2;
+    private ListNode _root;
+    private int _count;
+    private ListNode _curr;
     public MyQueue()
     {
-        _stack1 = new Stack<int>();
-        _stack2 = new Stack<int>();
+        _root = new ListNode();
+        _curr = _root;
+        _count = 0;
     }
 
     public void Push(int x)
     {
-        if (_stack1.Count == 0)
-            _stack1.Push(x);
-        else {
-            while (_stack1.Count > 0)
-                _stack2.Push(_stack1.Pop());
-            _stack1.Push(x);
-            while (_stack2.Count > 0)
-                _stack1.Push(_stack2.Pop());
-        }
+        var newNode = new ListNode(x);
+        _curr.next = newNode;
+        _curr = _curr.next;
+        _count++;
     }
 
     public int Pop()
     {
-        return _stack1.Pop();
+        var popped = _root.next.val;
+        _root.next = _root.next.next;
+        if(_root.next == null)
+            _curr = _root;
+        _count--;
+        return popped;
     }
 
     public int Peek()
     {
-        return _stack1.Peek();
+        return _root.next == null ? 0 : _root.next.val;
     }
 
     public bool Empty()
     {
-        return _stack1.Count == 0;
+        return _count == 0;
+    }
+
+    private class ListNode
+    {
+        public int val { get; set; }
+        public ListNode next { get; set; }
+
+        public ListNode()
+        {
+            this.val = 0;
+            this.next = null;
+        }
+        public ListNode(int val = 0, ListNode next = null)
+        {
+            this.val = val;
+            this.next = next;
+        }
     }
 }
 
