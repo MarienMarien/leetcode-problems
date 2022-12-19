@@ -11,32 +11,31 @@
  */
 public class Solution {
     public ListNode ReverseKGroup(ListNode head, int k) {
-        return ReverseInGroup(head, k);
+        var nodesCount = 0;
+        var curr = head;
+        while (curr != null) { 
+            nodesCount++;
+            curr = curr.next;
+        }
+        return ReverseInGroupO1Space(head, k, nodesCount);
     }
 
-    private ListNode ReverseInGroup(ListNode root, int k)
+    private ListNode ReverseInGroupO1Space(ListNode root, int k, int nodesLeft)
     {
-        if (root == null || k == 0)
+        if (root == null || k == 0 || nodesLeft < k)
             return root;
-        var head = new ListNode(0, root);
-        var curr = root;
-        var stack = new Stack<ListNode>();
         var count = k;
-        while (count > 0 && curr != null) {
-            stack.Push(curr);
-            curr = curr.next;
+        var curr = root;
+        ListNode head = null;
+        ListNode next;
+        while (count > 0) {
+            next = curr.next;
+            curr.next = head;
+            head = curr;
+            curr = next;
             count--;
         }
-        if (stack.Count == k)
-        {
-            var newHead = stack.Pop();
-            head.next = newHead;
-            while (stack.Count > 0) {
-                newHead.next = stack.Pop();
-                newHead = newHead.next;
-            }
-            newHead.next = ReverseInGroup(curr, k);
-        }
-        return head.next;
+        root.next = ReverseInGroupO1Space(curr, k, nodesLeft - k);
+        return head;
     }
 }
