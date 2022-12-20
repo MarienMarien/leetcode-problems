@@ -1,34 +1,52 @@
 public class Solution {
     public bool ValidPath(int n, int[][] edges, int source, int destination) {
-        if (source == destination)
-            return true;
-        var map = new Dictionary<int, ISet<int>>();
-        foreach (var edge in edges) {
-            if (!map.ContainsKey(edge[0]))
-                map.Add(edge[0], new HashSet<int>());
-            map[edge[0]].Add(edge[1]);
-            if (!map.ContainsKey(edge[1]))
-                map.Add(edge[1], new HashSet<int>());
-            map[edge[1]].Add(edge[0]);
+        var uf = new UnionFind(n);
+        foreach (var e in edges) {
+            uf.Union(e[0], e[1]);
         }
-        return HasPath(map, source, destination, new HashSet<int>());
+        var sParent = uf.Find(source);
+        var dParent = uf.Find(destination);
+        return sParent == dParent;
     }
 
-    private bool HasPath(Dictionary<int, ISet<int>> map, int source, int destination, HashSet<int> visited)
-    {
-        if (!map.ContainsKey(source))
-            return false;
-        if (map[source].Contains(destination))
-            return true;
-        if (!visited.Contains(source))
+    private class UnionFind {
+        private int[] _parent;
+        private int[] _rank;
+
+        public UnionFind(int n)
         {
-            visited.Add(source);
-            foreach (var s in map[source])
-            {
-                if (HasPath(map, s, destination, visited))
-                    return true;
+            _parent = new int[n];
+            _rank = new int[n];
+            n--;
+            while (n >= 0) {
+                _parent[n] = n--;
             }
         }
-        return false;
+
+        public int Find(int node) {
+            if (_parent[node] != node)
+                _parent[node] = Find(_parent[node]);
+            return _parent[node];
+        }
+
+        public bool Union(int n1, int n2) {
+            var parentn1 = Find(n1);
+            var parentn2 = Find(n2);
+            if (parentn1 == parentn2)
+                return false;
+            if (_rank[parentn1] > _rank[parentn2])
+            {
+                _parent[parentn2] = parentn1;
+            }
+            else if (_rank[parentn1] < _rank[parentn2])
+            {
+                _parent[parentn1] = parentn2;
+            }
+            else {
+                _rank[parentn2]++;
+                _parent[parentn1] = parentn2;
+            }
+            return true;
+        }
     }
 }
