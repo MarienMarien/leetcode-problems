@@ -17,9 +17,8 @@ public class Solution {
         {
             _parent = new int[n];
             _rank = new int[n];
-            n--;
-            while (n >= 0) {
-                _parent[n] = n--;
+            while (--n >= 0) {
+                _parent[n] = n;
             }
         }
 
