@@ -1,23 +1,16 @@
 public class Solution {
     private Dictionary<int, int> _powers;
     public int GetKth(int lo, int hi, int k) {
-        _powers = new Dictionary<int, int>();
-        for (var curr = lo; curr <= hi; curr++) {
-            if(!_powers.ContainsKey(curr))
-                GetIntPower(curr);
+         _powers = new Dictionary<int, int>();
+        var resultList = new List<int[]>();
+        for (var curr = lo; curr <= hi; curr++)
+        {
+            if (!_powers.TryGetValue(curr, out int power))
+                power = GetIntPower(curr);
+            resultList.Add(new int[] { curr, power });
         }
-        var resultList = _powers.OrderBy(x => x.Value).ThenBy(x => x.Key);
-        var count = 0;
-        var result = -1;
-        foreach (var r in resultList) {
-            if (r.Key >= lo && r.Key <= hi)
-                count++;
-            if (count == k) {
-                result = r.Key;
-                break;
-            }
-        }
-        return result;
+        resultList.Sort(Comparer<int[]>.Create((x, y) => { return x[1] == y[1] ? x[0] - y[0] : x[1] - y[1]; }));
+        return resultList[k - 1][0];
     }
 
     private int GetIntPower(int curr)
