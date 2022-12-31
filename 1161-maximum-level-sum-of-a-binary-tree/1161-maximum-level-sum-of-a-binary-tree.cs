@@ -12,40 +12,28 @@
  * }
  */
 public class Solution {
+    private IDictionary<int, int> _layerSums;
     public int MaxLevelSum(TreeNode root) {
-        var maxSum = Int32.MinValue;
-        var q = new Queue<TreeNode>();
-        q.Enqueue(root);
-        var currSum = 0;
-        var layerSize = 1;
-        var nextLayerSize = 0;
-        var layerNo = 1;
-        var res = layerNo;
-        while (q.Count > 0) {
-            var node = q.Dequeue();
-            layerSize--;
-            currSum += node.val;
-            if (node.left != null) { 
-                q.Enqueue(node.left);
-                nextLayerSize++;
-            }
-            if (node.right != null)
+        _layerSums = new Dictionary<int, int>();
+        GetLayerSums(root, 1);
+        var maxLayer = 1;
+        foreach (var l in _layerSums) {
+            if (_layerSums[maxLayer] < l.Value)
             {
-                q.Enqueue(node.right);
-                nextLayerSize++;
-            }
-            if (layerSize == 0) {
-                if (currSum > maxSum)
-                {
-                    maxSum = currSum;
-                    res = layerNo;
-                }
-                layerNo++;
-                layerSize = nextLayerSize;
-                currSum = 0;
-                nextLayerSize = 0;
+                maxLayer = l.Key;
             }
         }
-        return res;
+        return maxLayer;
+    }
+
+    private void GetLayerSums(TreeNode root, int layer)
+    {
+        if (root == null)
+            return;
+        if (!_layerSums.ContainsKey(layer))
+            _layerSums.Add(layer, 0);
+        _layerSums[layer]+= root.val;
+        GetLayerSums(root.left, layer + 1);
+        GetLayerSums(root.right, layer + 1);
     }
 }
