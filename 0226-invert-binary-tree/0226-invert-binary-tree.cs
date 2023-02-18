@@ -13,20 +13,20 @@
  */
 public class Solution {
     public TreeNode InvertTree(TreeNode root) {
-        if (root == null)
-            return root;
-        var q = new Queue<TreeNode>();
-        q.Enqueue(root);
-        while (q.Count > 0) {
-            var curr = q.Dequeue();
-            var tmp = curr.right;
-            curr.right = curr.left;
-            curr.left = tmp;
-            if(curr.left != null)
-                q.Enqueue(curr.left);
-            if(curr.right != null)
-                q.Enqueue(curr.right);
-        }
+        Invert(root);
         return root;
+    }
+
+    private void Invert(TreeNode root)
+    {
+        if (root == null)
+            return;
+        Invert(root.left);
+        Invert(root.right);
+        if(root.left != null || root.right != null){
+            var tmp = root.left;
+            root.left = root.right;
+            root.right = tmp;
+        }
     }
 }
