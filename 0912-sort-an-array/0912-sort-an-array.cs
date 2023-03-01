@@ -1,33 +1,51 @@
 public class Solution {
     public int[] SortArray(int[] nums) {
-        return QuickSort(nums, 0, nums.Length - 1);
+        return MergeSort(nums, 0, nums.Length - 1);
     }
 
-    private void Swap(int[] arr, int i, int j) {
-        var tmp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = tmp;
-    }
-
-    private int Partition(int[] arr, int start, int end) {
-        var pivot = arr[end];
-        var id = start - 1;
-        for (var i = start; i <= end - 1; i++) {
-            if (arr[i] < pivot) {
-                id++;
-                Swap(arr, id, i);
-            }
-        }
-        Swap(arr, id + 1, end);
-        return id + 1;
-    }
-    private int[] QuickSort(int[] nums, int start, int end)
+    private int[] MergeSort(int[] nums, int start, int end)
     {
         if (start < end) {
-            var partitionId = Partition(nums, start, end);
-            nums = QuickSort(nums, start, partitionId - 1);
-            return QuickSort(nums, partitionId + 1, end);
+            var mid = (start + end) / 2;
+            MergeSort(nums, start, mid);
+            MergeSort(nums, mid + 1, end);
+
+            Merge(nums, start, mid, end);
         }
         return nums;
+    }
+
+    private void Merge(int[] nums, int start, int mid, int end)
+    {
+        var len1 = mid - start + 1;
+        var len2 = end - mid;
+
+        var leftArr = new int[len1];
+        var rightArr = new int[len2];
+        for (var i = 0; i < len1; i++) {
+            leftArr[i] = nums[start + i];
+        }
+        for (var i = 0; i < len2; i++)
+        {
+            rightArr[i] = nums[mid + 1 + i];
+        }
+
+        var leftId = 0;
+        var rightId = 0;
+        var numsId = start;
+        while (leftId < len1 && rightId < len2) {
+            if (leftArr[leftId] <= rightArr[rightId])
+            {
+                nums[numsId] = leftArr[leftId++];
+            }
+            else {
+                nums[numsId] = rightArr[rightId++];
+            }
+            numsId++;
+        }
+        while(leftId < len1)
+            nums[numsId++] = leftArr[leftId++];
+        while (rightId < len2)
+            nums[numsId++] = rightArr[rightId++];
     }
 }
