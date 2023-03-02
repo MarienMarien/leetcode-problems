@@ -1,43 +1,36 @@
 public class Solution {
     public int Compress(char[] chars) {
-        if (chars.Length < 2)
-            return chars.Length;
-        var count = 1;
+        var sId = 1;
         var prev = chars[0];
-        var changeId = 0;
-        for (var i = 1; i < chars.Length; i++) {
-            if (chars[i] == prev) {
-                count++;
-                continue;
-            }
-            if (count > 1)
-            {
-                chars[changeId] = prev;
-                changeId++;
-                // add number
-                foreach (var c in count.ToString())
+        var chId = 1;
+        int count;
+        var startPos = 0;
+        while (chId < chars.Length) {
+            if (chars[chId] != prev) {
+                count = chId - startPos;
+                if (count > 1)
                 {
-                    chars[changeId] = c;
-                    changeId++;
+                    var countStr = count.ToString();
+                    foreach (var ch in countStr)
+                    {
+                        chars[sId++] = ch;
+                    }
                 }
+                startPos = chId;
+                chars[sId++] = chars[chId];
+                prev = chars[chId];
             }
-            else
-            {
-                chars[changeId] = prev;
-                changeId++;
-            }
-            prev = chars[i];
-            count = 1;
+            chId++;
         }
-        chars[changeId] = prev;
-        changeId++;
-        // add number
-        if(count > 1)
-            foreach (var c in count.ToString())
+        count = chId - startPos;
+        if (count > 1)
+        {
+            var countStr = count.ToString();
+            foreach (var ch in countStr)
             {
-                chars[changeId] = c;
-                changeId++;
+                chars[sId++] = ch;
             }
-        return changeId;
+        }
+        return sId;
     }
 }
