@@ -4,11 +4,10 @@ public class Solution {
         if(grid.Length < 3 || grid[0].Length < 3)
             return 0;
         var onesCount = 0;
-        var test = 0;
         for (var row = 0; row < grid.Length; row += grid.Length - 1) {
             for (var col = 0; col < grid[0].Length; col++){
                 if (grid[row][col] == 1) {
-                    test += Dfs(grid, row, col);
+                    _ = Dfs(grid, row, col);
                 }
             }
         }
@@ -18,7 +17,7 @@ public class Solution {
             {
                 if (grid[row][col] == 1)
                 {
-                    test += Dfs(grid, row, col);
+                    _= Dfs(grid, row, col);
                 }
             }
         }
