@@ -1,13 +1,18 @@
 public class Solution {
     public int Rob(int[] nums) {
-         var stolen = new int[nums.Length];
-         stolen[0] = nums[0];
-         for (var i = 1; i < nums.Length; i++) {
-             if(i > 1)
-                stolen[i] = Math.Max(nums[i] + stolen[i - 2], stolen[i - 1]);
-            else
-                stolen[i] = Math.Max(nums[i], stolen[i - 1]);
-         }
-         return stolen[^1];
+        if(nums.Length <= 1)
+            return nums[0];
+
+        var maxStart1 = nums[0];
+        var maxStart2 = Math.Max(nums[0], nums[1]);
+        var maxStolen = maxStart2;
+        for(var i = 2; i < nums.Length; i++)
+        {
+            maxStolen = Math.Max(maxStart2, maxStart1 + nums[i]);
+            maxStart1 = maxStart2;
+            maxStart2 = maxStolen;
+        }
+
+        return maxStolen;
     }
 }
