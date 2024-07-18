@@ -1,21 +1,24 @@
 public class Solution {
     public string RemoveStars(string s) {
         var stack = new Stack<char>();
-        var starPresent = false;
-        foreach (var ch in s) {
-            if (ch == '*')
+        for (var i = 0; i < s.Length; i++)
+        {
+            if (s[i] == '*')
             {
-                if(stack.Count > 0)
-                    stack.Pop();
-                starPresent = true;
-                continue;
+                stack.Pop();
             }
-            stack.Push(ch);
+            else
+            {
+                stack.Push(s[i]);
+            }
         }
-        if (!starPresent)
-            return s;
-        var res = stack.ToArray();
-        Array.Reverse(res);
-        return new string(res);
+
+        var charArr = new char[stack.Count];
+        for (var i = charArr.Length - 1; i >= 0; i--)
+        {
+            charArr[i] = stack.Pop();
+        }
+
+        return new string(charArr);
     }
 }
