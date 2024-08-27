@@ -1,4 +1,4 @@
-<h2><a href="https://leetcode.com/problems/rotated-digits/">788. Rotated Digits</a></h2><h3>Medium</h3><hr><div><p>An integer <code>x</code> is a <strong>good</strong> if after rotating each digit individually by 180 degrees, we get a valid number that is different from <code>x</code>. Each digit must be rotated - we cannot choose to leave it alone.</p>
+<h2><a href="https://leetcode.com/problems/rotated-digits/">788. Rotated Digits</a></h2><h3>Medium</h3><hr><p>An integer <code>x</code> is a <strong>good</strong> if after rotating each digit individually by 180 degrees, we get a valid number that is different from <code>x</code>. Each digit must be rotated - we cannot choose to leave it alone.</p>
 
 <p>A number is valid if each digit remains a digit after rotation. For example:</p>
 
@@ -14,7 +14,8 @@
 <p>&nbsp;</p>
 <p><strong class="example">Example 1:</strong></p>
 
-<pre><strong>Input:</strong> n = 10
+<pre>
+<strong>Input:</strong> n = 10
 <strong>Output:</strong> 4
 <strong>Explanation:</strong> There are four good numbers in the range [1, 10] : 2, 5, 6, 9.
 Note that 1 and 10 are not good numbers, since they remain unchanged after rotating.
@@ -22,13 +23,15 @@ Note that 1 and 10 are not good numbers, since they remain unchanged after rotat
 
 <p><strong class="example">Example 2:</strong></p>
 
-<pre><strong>Input:</strong> n = 1
+<pre>
+<strong>Input:</strong> n = 1
 <strong>Output:</strong> 0
 </pre>
 
 <p><strong class="example">Example 3:</strong></p>
 
-<pre><strong>Input:</strong> n = 2
+<pre>
+<strong>Input:</strong> n = 2
 <strong>Output:</strong> 1
 </pre>
 
@@ -38,4 +41,3 @@ Note that 1 and 10 are not good numbers, since they remain unchanged after rotat
 <ul>
 	<li><code>1 &lt;= n &lt;= 10<sup>4</sup></code></li>
 </ul>
-</div>
