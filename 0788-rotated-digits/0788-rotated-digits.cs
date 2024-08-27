@@ -1,30 +1,37 @@
 public class Solution {
-    private Dictionary<int, int> _map = new Dictionary<int, int>{ { 0, 0 }, { 1, 1 }, { 2, 5 }, { 5, 2 }, { 6, 9 }, { 8, 8 }, { 9, 6 } };
-    public int RotatedDigits(int n)
-    {
-        var count = 0;
-        var curr = 1;
-        while (curr <= n) {
-            if(IsGood(curr))
-                count++;
-            curr++;
-        }
-        return count;
-    }
+    public int RotatedDigits(int n) {
+        var dp = new int[n + 1];
+        var goodCount = 0;
+        var rotateToSelf = new HashSet<int> { 0, 1, 8 };
+        var rotate = new HashSet<int> { 2, 5, 6, 9 };
 
-    private bool IsGood(int n)
-    {
-        var curr = n;
-        var rotated = 0;
-        var koef = 1;
-        while (curr > 0) {
-            var digit = curr % 10;
-            if (!_map.ContainsKey(digit))
-                return false;
-            rotated += _map[digit] * koef;
-            koef *= 10;
-            curr /= 10;
+        for (var i = 0; i <= n; i++)
+        {
+            if (i < 10)
+            {
+                if (rotateToSelf.Contains(i))
+                    dp[i] = 1;
+                else if (rotate.Contains(i))
+                {
+                    dp[i] = 2;
+                    goodCount++;
+                }
+            }
+            else {
+                var rem = dp[i % 10];
+                var div = dp[i / 10];
+                if (rem == 1 && div == 1)
+                {
+                    dp[i] = 1;
+                }
+                else if(rem >=1 && div >= 1)
+                {
+                    dp[i] = 2;
+                    goodCount++;
+                }
+            }
         }
-        return rotated != n;
+
+        return goodCount;
     }
 }
