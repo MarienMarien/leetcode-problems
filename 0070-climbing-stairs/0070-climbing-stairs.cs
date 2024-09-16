@@ -1,14 +1,16 @@
 public class Solution {
     public int ClimbStairs(int n) {
-        if(n < 2)
+        if (n < 3)
             return n;
-        var n1 = 1;
-        var n2 = 2;
-        for(var i = 3; i <= n; i++){
-            var next = n1 + n2;
-            n1 = n2;
-            n2 = next;
+        var take1 = 1;
+        var take2 = 2;
+        for (var stair = 3; stair <= n; stair++)
+        {
+            var pathsCount = take1 + take2;
+            take1 = take2;
+            take2 = pathsCount;
         }
-        return n2;
+
+        return take2;
     }
 }
