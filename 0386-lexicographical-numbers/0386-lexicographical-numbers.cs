@@ -1,18 +1,26 @@
 public class Solution {
-    public IList<int> LexicalOrder(int n) {
-        IList<int> res = new List<int>();
-        FillRes(n, 1, res);
-        return res;
+    private IList<int> _result;
+    public IList<int> LexicalOrder(int n)
+    {
+        _result = new List<int>();
+        GenerateAllNumbers(0, n);
+
+        return _result;
     }
 
-    private void FillRes(int n, int curr, IList<int> res)
+    private void GenerateAllNumbers(int num, int n)
     {
-        if (curr > n || res.Count == n)
+        if (num > n)
             return;
-        res.Add(curr);
-        if (curr * 10 <= n)
-            FillRes(n, curr * 10, res);
-        if(curr + 1 < ((curr / 10) + 1) * 10)
-            FillRes(n, curr + 1, res);
+        for (var i = 0; i <= 9; i++)
+        {
+            var nextNum = num + i;
+            if (nextNum > 0 && nextNum <= n)
+            {
+                _result.Add(nextNum);
+                GenerateAllNumbers(nextNum * 10, n);
+            }
+
+        }
     }
 }
