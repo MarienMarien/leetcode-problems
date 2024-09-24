@@ -1,79 +1,84 @@
 public class Solution {
-    public int LongestCommonPrefix(int[] arr1, int[] arr2)
+    public int LongestCommonPrefix(int[] arr1, int[] arr2) 
     {
-        var maxCommon = 0;
         var trie = new Trie();
-        foreach (var n in arr1) {
-            trie.Insert(n);
+        foreach (var a in arr1)
+        {
+            trie.Insert(a.ToString());
         }
 
-        foreach (var n in arr2) {
-            var comm = trie.CommonLength(n);
-            Console.WriteLine($"Comm for {n} is {comm}");
-            maxCommon = Math.Max(maxCommon, comm);
+        var maxLen = 0;
+        foreach (var a in arr2)
+        {
+            maxLen = Math.Max(maxLen, trie.GetPrefixLength(a.ToString()));
         }
 
-        return maxCommon;
+        return maxLen;
     }
 
-    class Trie {
+    public class Trie {
         private TrieNode _root;
+
         public Trie()
         {
             _root = new TrieNode();
         }
 
-        public void Insert(int n) {
-            var nStr = n.ToString();
+        public void Insert(string number)
+        {
             var node = _root;
-            foreach (var ch in nStr) {
-                var d = Int32.Parse(ch.ToString());
-                if (!node.ContainsKey(d)) {
-                    node.Put(d, new TrieNode());
+            foreach (var n in number)
+            {
+                if (!node.ContainsKey(n))
+                {
+                    node.Put(n, new TrieNode());
                 }
-                node = node.Get(d);
+                node = node.Get(n);
             }
         }
 
-        public int CommonLength(int n) {
-            var nStr = n.ToString();
+        public int GetPrefixLength(string number)
+        {
+            var prefixLen = 0;
             var node = _root;
-            var len = 0;
-
-            foreach (var ch in nStr) {
-                var d = Int32.Parse(ch.ToString());
-                if (!node.ContainsKey(d))
+            
+            foreach (var n in number)
+            {
+                if (!node.ContainsKey(n))
                 {
                     break;
                 }
-                node = node.Get(d);
-                len++;
+                prefixLen++;
+                node = node.Get(n);
             }
 
-            return len;
+            return prefixLen;
         }
     }
 
-    class TrieNode {
+    public class TrieNode
+    {
         private TrieNode[] _links;
-        private const int _linksCount = 10;
-        private bool _isEnd;
+        private const int _size = 10;
 
         public TrieNode()
         {
-            _links = new TrieNode[_linksCount];
+            _links = new TrieNode[_size];
         }
 
-        public bool ContainsKey(int key) {
-            return _links[key] != null;
+        public bool ContainsKey(char ch)
+        {
+            return _links[ch - '0'] != null;
         }
 
-        public void Put(int key, TrieNode node) {
-            _links[key] = node;
+        public TrieNode Get(char ch)
+        {
+            return _links[ch - '0'];
         }
 
-        public TrieNode Get(int key) {
-            return _links[key];
+        public void Put(char ch, TrieNode node)
+        {
+            _links[ch - '0'] = node;
         }
     }
 }
