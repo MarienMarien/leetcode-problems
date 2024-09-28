@@ -14,7 +14,7 @@ public class MyCircularDeque {
 
     public bool InsertFront(int value)
     {
-        if (_capacity >= _maxCapacity)
+        if (IsFull())
             return false;
 
         _capacity++;
@@ -27,7 +27,7 @@ public class MyCircularDeque {
 
     public bool InsertLast(int value)
     {
-        if (_capacity >= _maxCapacity)
+        if (IsFull())
             return false;
 
         _capacity++;
@@ -40,7 +40,7 @@ public class MyCircularDeque {
 
     public bool DeleteFront()
     {
-        if (_capacity == 0)
+        if (IsEmpty())
             return false;
 
         _capacity--;
@@ -52,7 +52,7 @@ public class MyCircularDeque {
 
     public bool DeleteLast()
     {
-        if (_capacity == 0)
+        if (IsEmpty())
             return false;
 
         _capacity--;
@@ -64,12 +64,12 @@ public class MyCircularDeque {
 
     public int GetFront()
     {
-        return _capacity == 0 ? -1 :_head.Next.Val;
+        return IsEmpty() ? -1 :_head.Next.Val;
     }
 
     public int GetRear()
     {
-        return _capacity == 0 ? -1 :_tail.Prev.Val;
+        return IsEmpty() ? -1 :_tail.Prev.Val;
     }
 
     public bool IsEmpty()
