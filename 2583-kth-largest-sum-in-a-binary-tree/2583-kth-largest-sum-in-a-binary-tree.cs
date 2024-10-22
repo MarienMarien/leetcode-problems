@@ -15,36 +15,32 @@ public class Solution {
     public long KthLargestLevelSum(TreeNode root, int k) {
         var q = new Queue<TreeNode>();
         q.Enqueue(root);
-        var pq = new PriorityQueue<long, long>(Comparer<long>.Create((x, y) => y.CompareTo(x)));
         var levelSize = 1;
-        var nextLevelSize = 0;
-        long levelSum = 0;
-        while (q.Count > 0) {
+        var levelSum = 0L;
+        var pq = new PriorityQueue<long, long>();
+        while(q.Count > 0)
+        {
             var curr = q.Dequeue();
-            levelSize--;
             levelSum += curr.val;
-            if (curr.left != null) {
+            levelSize--;
+
+            if(curr.left != null)
                 q.Enqueue(curr.left);
-                nextLevelSize++;
-            }
-            if (curr.right != null)
-            {
+            if(curr.right != null)
                 q.Enqueue(curr.right);
-                nextLevelSize++;
-            }
-            if (levelSize == 0) {
-                levelSize = nextLevelSize;
-                nextLevelSize = 0;
+
+            if(levelSize == 0)
+            {
                 pq.Enqueue(levelSum, levelSum);
+                if(pq.Count > k)
+                {
+                    pq.Dequeue();
+                }
+                levelSize = q.Count;
                 levelSum = 0;
             }
         }
-        while (pq.Count > 0) {
-            k--;
-            var curr = pq.Dequeue();
-            if (k == 0)
-                return curr;
-        }
-        return -1;
+
+        return pq.Count < k ? -1 : pq.Dequeue();
     }
 }
