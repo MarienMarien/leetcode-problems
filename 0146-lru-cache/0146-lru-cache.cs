@@ -1,89 +1,92 @@
 public class LRUCache {
-
-    private Dictionary<int, Node> _cache;
-    private Node _head;
-    private Node _tail;
     private int _capacity;
-
-    private void AddNode(Node node)
-    {
-        node.Prev = _head;
-        node.Next = _head.Next;
-        _head.Next.Prev = node;
-        _head.Next = node;
-    }
-
-    private void RemoveNode(Node node)
-    {
-        var prev = node.Prev;
-        var next = node.Next;
-
-        prev.Next = next;
-        next.Prev = prev;
-    }
+    private IDictionary<int, DoublyLinkedListNode> _nodeMap;
+    private DoublyLinkedListNode _head;
+    private DoublyLinkedListNode _tail;
 
     public LRUCache(int capacity)
     {
-        _cache = new Dictionary<int, Node>();
         _capacity = capacity;
-        _head = new Node();
-        _tail = new Node();
-        _head.Next = _tail;
-        _tail.Next = _head;
+        _nodeMap = new Dictionary<int, DoublyLinkedListNode>();
+        _head = new DoublyLinkedListNode(-1, -1);
+        _tail = new DoublyLinkedListNode(-1, -1, _head);
+        _head.next = _tail;
     }
 
     public int Get(int key)
     {
-        var val = -1;
-        if (_cache.ContainsKey(key))
-        {
-            var node = _cache[key];
-            val = node.Value;
-            RemoveNode(node);
-            AddNode(node);
-        }
-        return val;
+        if (!_nodeMap.ContainsKey(key))
+            return -1;
+        var updatedNode = MoveNodeToHead(key);
+        _nodeMap[key] = updatedNode;
+        return updatedNode.val;
     }
 
     public void Put(int key, int value)
     {
-        if (_cache.ContainsKey(key))
+        AddOrUpdateNode(key, value);
+        if (_nodeMap.Count > _capacity)
         {
-            var node = _cache[key];
-            RemoveNode(node);
-            node.Value = value;
-            AddNode(node);
-
-        }
-        else
-        {
-            var newNode = new Node(key, value);
-            if (_cache.Count == _capacity)
-            {
-                _cache.Remove(_tail.Prev.Key);
-                RemoveNode(_tail.Prev);
-
-            }
-            AddNode(newNode);
-            _cache.Add(key, newNode);
+            Evict();
         }
     }
 
-    class Node
+    private void AddOrUpdateNode(int key, int value)
     {
-        public int Key { get; set; }
-        public int Value { get; set; }
-        public Node Prev { get; set; }
-        public Node Next { get; set; }
-        public Node() { }
-
-        public Node(int key, int value, Node prev = null, Node next = null)
+        if (_nodeMap.ContainsKey(key))
         {
-            Key = key;
-            Value = value;
-            Prev = prev;
-            Next = next;
+            _nodeMap[key].val = value;
+            var updatedNode = MoveNodeToHead(key);
+            _nodeMap[key] = updatedNode;
+            return;
         }
+
+        var newNode = new DoublyLinkedListNode(key, value, _head, _head.next);
+        var prevFirst = _head.next;
+        prevFirst.prev = newNode;
+        _head.next = newNode;
+        _nodeMap.Add(key, newNode);
+    }
+
+    private void Evict()
+    {
+        var prevLast = _tail.prev;
+        var newLast = prevLast.prev;
+        newLast.next = _tail;
+        _tail.prev = newLast;
+        _nodeMap.Remove(prevLast.key);
+    }
+
+    private DoublyLinkedListNode MoveNodeToHead(int key)
+    {
+        var node = _nodeMap[key];
+        var prev = node.prev;
+        prev.next = node.next;
+        var next = node.next;
+        next.prev = prev;
+
+        node.prev = _head;
+        node.next = _head.next;
+        var prevFirst = _head.next;
+        prevFirst.prev = node;
+        _head.next = node;
+        return node;
+    }
+}
+
+public class DoublyLinkedListNode
+{
+    public int key;
+    public int val;
+    public DoublyLinkedListNode next;
+    public DoublyLinkedListNode prev;
+
+    public DoublyLinkedListNode(int key = -1, int val = -1, DoublyLinkedListNode prev = null, DoublyLinkedListNode next = null)
+    {
+        this.key = key;
+        this.val = val;
+        this.prev = prev;
+        this.next = next;
     }
 }
 
