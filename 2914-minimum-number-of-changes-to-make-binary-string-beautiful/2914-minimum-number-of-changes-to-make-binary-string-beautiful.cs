@@ -5,18 +5,12 @@ public class Solution {
         for (var i = 0; i < s.Length; i++)
         {
             substrLen++;
-            if (i < s.Length - 1)
+            if (i < s.Length - 1 && s[i] != s[i + 1] && substrLen % 2 == 1)
             {
-                if (s[i] != s[i + 1])
-                {
-                    if (substrLen % 2 == 1)
-                    {
-                        changesCount++;
-                        i++;
-                        substrLen = 0;
-                        continue;
-                    }
-                }
+                changesCount++;
+                i++;
+                substrLen = 0;
+                continue;
             }
 
         }
