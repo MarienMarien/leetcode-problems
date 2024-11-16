@@ -6,12 +6,12 @@ public class Solution {
         for (var i = 0; i < nums.Length; i++)
         {
             if (i > 0 && nums[i] - nums[i - 1] == 1)
-                sortedItemsCount = Math.Min(sortedItemsCount + 1, k);
+                sortedItemsCount++;
             else
                 sortedItemsCount = 1;
             if (i >= k - 1)
             {
-                powers[pId] = sortedItemsCount == k ? nums[i] : -1;
+                powers[pId] = sortedItemsCount >= k ? nums[i] : -1;
                 pId++;
             }
         }
