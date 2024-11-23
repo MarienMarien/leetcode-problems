@@ -1,30 +1,44 @@
 public class Solution {
     public char[][] RotateTheBox(char[][] box) {
-        var height = box.Length;
-        var width = box[0].Length;
-        var newBox = new char[width][];
-        for (var row = 0; row < height; row++) {
-            var lastEmptySpot = -1;
-            var newRow = height - 1 - row;
-            for (var col = width - 1; col >= 0; col--) {
-                if(newBox[col] == null)
-                    newBox[col] = new char[height];
-                if (box[row][col] == '#' && lastEmptySpot >= 0)
-                {
-                    newBox[col][newRow] = '.';
-                    newBox[lastEmptySpot][newRow] = '#';
-                    lastEmptySpot--;
-                    continue;
-                }
-                if (box[row][col] == '.' && lastEmptySpot < 0) {
-                    lastEmptySpot = col;
-                }
-                if (box[row][col] == '*') {
-                    lastEmptySpot = -1;
-                }
-                newBox[col][newRow] = box[row][col];
-            }
+        var rotated = new char[box[0].Length][];
+        for (var i = 0; i < rotated.Length; i++)
+        {
+            rotated[i] = new char[box.Length];
         }
-        return newBox;
+
+        var rotatedCol = box.Length - 1;
+        for (var boxRow = 0; boxRow < box.Length; boxRow++)
+        {
+            var emptySpaceId = -1;
+            for (var boxCol = box[0].Length - 1; boxCol >= 0;  boxCol--)
+            {
+                switch (box[boxRow][boxCol])
+                {
+                    case '.':
+                        if (emptySpaceId < 0)
+                            emptySpaceId = boxCol;
+                        rotated[boxCol][rotatedCol] = '.';
+                        break;
+                    case '#':
+                        var rotatedRow = boxCol;
+                        if (emptySpaceId >= 0)
+                        {
+                            rotatedRow = emptySpaceId;
+                            rotated[boxCol][rotatedCol] = '.';
+                            emptySpaceId--;
+                        }
+                        rotated[rotatedRow][rotatedCol] = '#';
+                        break;
+                    case '*':
+                        emptySpaceId = -1;
+                        rotated[boxCol][rotatedCol] = '*';
+                        break;
+                    default: break;
+                }
+            }
+            rotatedCol--;
+        }
+
+        return rotated;
     }
 }
