@@ -1,27 +1,34 @@
 public class Solution {
     public int IsPrefixOfWord(string sentence, string searchWord) {
-        var wordId = -1;
-        var sId = 0;
-        var currWordId = 1;
-        while (sId < sentence.Length)
+        var sentenceId = 0;
+        var searchWordId = 0;
+        var wordId = 1;
+
+        while(sentenceId < sentence.Length)
         {
-            var swId = 0;
-            var found = true;
-            while (sId < sentence.Length && !char.IsWhiteSpace(sentence[sId]))
+            var currChar = sentence[sentenceId];
+            sentenceId++;
+            if(char.IsWhiteSpace(currChar))
             {
-                if (found && swId < searchWord.Length && sentence[sId] != searchWord[swId]) {
-                    found = false;
-                }
-                swId++;
-                sId++;
+                wordId++;
+                searchWordId = 0;
+                continue;
             }
-            if (found && swId >= searchWord.Length) {
-                wordId = currWordId;
-                break;
+
+            if(currChar == searchWord[searchWordId])
+            {
+                searchWordId++;
+                if(searchWordId == searchWord.Length)
+                    return wordId;
+                continue;
             }
-            sId++;
-            currWordId++;
+            
+            while(sentenceId < sentence.Length && !char.IsWhiteSpace(sentence[sentenceId]))
+            {
+                sentenceId++;
+            }
         }
-        return wordId;
+
+        return -1;
     }
 }
