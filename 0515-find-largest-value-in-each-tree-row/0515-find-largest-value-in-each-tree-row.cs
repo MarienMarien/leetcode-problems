@@ -13,30 +13,40 @@
  */
 public class Solution {
     public IList<int> LargestValues(TreeNode root) {
-        var ans = new List<int>();
-        if (root == null)
-            return ans;
-        
-        var currMax = Int32.MinValue;
+        var resVals = new List<int>();
+        if(root == null)
+            return resVals;
+        resVals.Add(root.val);
         var q = new Queue<TreeNode>();
         q.Enqueue(root);
-        var rowLen = 1;
+        var levelSize = 1;
+        var levelMax = Int32.MinValue;
+        while(q.Count > 0)
+        {
+            var curr = q.Dequeue();
+            levelSize--;
 
-        while (q.Count > 0) { 
-            var node = q.Dequeue();
-            rowLen--;
-            currMax = Math.Max(currMax, node.val);
-            if (node.left != null)
-                q.Enqueue(node.left);
-            if(node.right != null)
-                q.Enqueue(node.right);
-            if (rowLen == 0) {
-                ans.Add(currMax);
-                currMax = Int32.MinValue;
-                rowLen = q.Count;
+            if(curr.left != null)
+            {
+                q.Enqueue(curr.left);
+                levelMax = Math.Max(levelMax, curr.left.val);
+            }
+
+            if(curr.right != null)
+            {
+                q.Enqueue(curr.right);
+                levelMax = Math.Max(levelMax, curr.right.val);
+            }
+
+            if(levelSize == 0)
+            {
+                levelSize = q.Count;
+                if(levelSize > 0)
+                    resVals.Add(levelMax);
+                levelMax = Int32.MinValue;
             }
         }
 
-        return ans;
+        return resVals;
     }
 }
