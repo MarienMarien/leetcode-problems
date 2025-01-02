@@ -14,13 +14,7 @@ public class Solution {
         {
             var right = queries[i][1];
             var left = queries[i][0];
-            if(left == 0)
-            {
-                ans[i] = vowelStrs[right];
-            } else 
-            {
-                ans[i] = vowelStrs[right] - vowelStrs[left - 1];
-            }
+            ans[i] = vowelStrs[right] - (left == 0 ? 0 : vowelStrs[left - 1]);
         }
         return ans;
     }
