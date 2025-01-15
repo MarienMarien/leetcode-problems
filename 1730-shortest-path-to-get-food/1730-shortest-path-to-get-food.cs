@@ -20,7 +20,7 @@ public class Solution {
 
         var q = new Queue<(int row, int col)>();
         q.Enqueue((startRow, startCol));
-        var pathFound = false;
+
         var directions = new int[][] { [0, 1], [1, 0], [0, -1], [-1, 0] };
         var skipEnqueueCells = new HashSet<char> { 'X', 'V' };
         const char FOODCELL = '#';
@@ -41,15 +41,12 @@ public class Solution {
                     continue;
                 if (grid[nextRow][nextCol] == FOODCELL)
                 {
-                    pathFound = true;
-                    break;
+                    return level;
                 }
                 q.Enqueue((nextRow, nextCol));
                 grid[nextRow][nextCol] = 'V';
             }
             
-            if (pathFound)
-                break;
             if (levelSize == 0)
             {
                 levelSize = q.Count;
@@ -57,6 +54,6 @@ public class Solution {
             }
         }
 
-        return pathFound ? level : -1;
+        return -1;
     }
 }
