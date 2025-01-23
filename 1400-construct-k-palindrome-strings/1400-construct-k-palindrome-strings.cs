@@ -3,18 +3,13 @@ public class Solution {
         if (s.Length < k)
             return false;
 
-        var alphabet = new Dictionary<char, int>();
+        var oddCount = 0;
+        var alphabet = new int[26];
         foreach (var ch in s)
         {
-            if (!alphabet.TryAdd(ch, 1))
-                alphabet[ch]++;
-        }
-
-        var oddCount = 0;
-        foreach (var entry in alphabet)
-        {
-            if(entry.Value % 2 == 1)
-                oddCount++;
+            var key = ch - 'a';
+            oddCount += alphabet[key] % 2 == 0 ? 1 : -1;
+            alphabet[key]++;
         }
 
         return oddCount <= k;
