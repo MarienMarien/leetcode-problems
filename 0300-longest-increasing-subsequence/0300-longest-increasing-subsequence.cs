@@ -1,16 +1,19 @@
 public class Solution {
     public int LengthOfLIS(int[] nums) {
         var dp = new int[nums.Length];
-        var max = 0;
-        for (var i = 1; i < nums.Length; i++)
+        dp[0] = 1;
+        var maxLen = 1;
+        for (var end = 1; end < nums.Length; end++)
         {
-            for (var j = 0; j < i; j++)
+            dp[end] = 1;
+            for (var curr = 0; curr < end; curr++)
             {
-                if (nums[j] < nums[i])
-                    dp[i] = Math.Max(dp[i], dp[j] + 1);
+                if (nums[curr] < nums[end])
+                    dp[end] = Math.Max(dp[end], dp[curr] + 1);
             }
-            max = Math.Max(max, dp[i]);
+            maxLen = Math.Max(maxLen, dp[end]);
         }
-        return max + 1;
+
+        return maxLen;
     }
 }
