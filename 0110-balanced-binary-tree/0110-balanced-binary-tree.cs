@@ -13,18 +13,18 @@
  */
 public class Solution {
     public bool IsBalanced(TreeNode root) {
-        if (root == null)
-            return true;
-        return Math.Abs(GetHeight(root.left, 0) - GetHeight(root.right, 0)) < 2 
-            && IsBalanced(root.left)
-            && IsBalanced(root.right);
+        return IsTreeBalanced(root).isBalanced;
     }
 
-    private int GetHeight(TreeNode node, int currHeight)
+    private (bool isBalanced, int height) IsTreeBalanced(TreeNode node)
     {
-        if (node == null)
-            return currHeight;
-        currHeight++;
-        return Math.Max(GetHeight(node.left, currHeight), GetHeight(node.right, currHeight));
+        if(node == null)
+            return (true, 0);
+
+        var left = IsTreeBalanced(node.left);
+        var right = IsTreeBalanced(node.right);
+        var isBalanced = left.isBalanced && right.isBalanced && Math.Abs(left.height - right.height) < 2;
+        var height = Math.Max(left.height, right.height) + 1;
+        return (isBalanced, height);
     }
 }
