@@ -11,7 +11,6 @@ public class Solution {
         var islandNo = 0;
         var islandsSize = new Dictionary<int, int>();
         var maxIsland = 0;
-        Console.Write($"Islands: ");
         for (var row = 0; row < _m; row++)
         {
             for (var col = 0; col < _n; col++)
@@ -22,7 +21,6 @@ public class Solution {
                     islandsSize.Add(islandNo, islandSize);
                     maxIsland = Math.Max(maxIsland, islandSize);
                     islandNo++;
-                    Console.Write($"{islandSize}, ");
                 }
             }
         }
