@@ -15,7 +15,6 @@ public class Solution {
         var start = 0;
         var end = 0;
         var minWindowStart = 0;
-        var minWindowEnd = 0;
         var minWindow = int.MaxValue;
         while(end < s.Length)
         {
@@ -32,7 +31,6 @@ public class Solution {
                     {
                         minWindow = end - start + 1;
                         minWindowStart = start;
-                        minWindowEnd = end;
                     }
                     
                     if(dict.ContainsKey(s[start]))
