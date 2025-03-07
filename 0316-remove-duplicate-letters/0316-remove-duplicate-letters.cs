@@ -1,25 +1,31 @@
 public class Solution {
     public string RemoveDuplicateLetters(string s) {
-        var sb = new StringBuilder();
+        var lastOccur = new Dictionary<char, int>();
+        for (var i = 0; i < s.Length; i++) {
+            lastOccur[s[i]] = i;
+        }
+
         var seen = new HashSet<char>();
-        var lastItems = new Dictionary<char, int>();
+        var ans = new char[lastOccur.Count];
         var stack = new Stack<char>();
-        for (var i = s.Length - 1; i >= 0; i--)
-            if (!lastItems.ContainsKey(s[i]))
-                lastItems.Add(s[i], i);
-        for (var i = 0; i < s.Length; i++) { 
-            var item = s[i];
-            if (!seen.Contains(item)) {
-                while (stack.Count > 0 && item < stack.Peek() && lastItems[stack.Peek()] > i)
+        for (var i = 0; i < s.Length; i++) 
+        {
+            if(!seen.Contains(s[i]))
+            {
+                while(stack.Count > 0 && stack.Peek() > s[i] && i < lastOccur[stack.Peek()]) 
+                {
                     seen.Remove(stack.Pop());
-                stack.Push(item);
-                seen.Add(item);
+                }
+                stack.Push(s[i]);
+                seen.Add(s[i]);
             }
         }
-        while (stack.Count > 0) { 
-            sb.Insert(0, stack.Pop());
+
+        var ansId = ans.Length - 1;
+        while (stack.Count > 0) 
+        {
+            ans[ansId--] = stack.Pop();
         }
-        
-        return sb.ToString();
+        return new string(ans);
     }
 }
