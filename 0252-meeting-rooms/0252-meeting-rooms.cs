@@ -1,29 +1,19 @@
 public class Solution {
     public bool CanAttendMeetings(int[][] intervals) {
-        Array.Sort(intervals, Comparer<int[]>.Create((x, y) =>
-        {
-            if (x[0] == y[0])
-                return y[1] - x[1];
+        Array.Sort(intervals, Comparer<int[]>.Create((x, y) => {
+            if(x[0] == y[0])
+                return x[1] - y[1];
             return x[0] - y[0];
         }));
-
-        var start = -1;
-        var end = -1;
-
-        for (var i = 0; i < intervals.Length; i++)
+        var prevIntervalEnd = -1;
+        foreach(var interval in intervals)
         {
-            if (IsOverlap(start, end, intervals[i]))
-            {
+            var currIntervalStart = interval[0];
+            if(currIntervalStart < prevIntervalEnd)
                 return false;
-            }
-            start = intervals[i][0];
-            end = intervals[i][1];
+            prevIntervalEnd = interval[1];
         }
-        return true;
-    }
 
-    private bool IsOverlap(int start, int end, int[] ints)
-    {
-        return (ints[1] <= end && ints[1] > start) || (ints[0] >= start && ints[0] < end);
+        return true;
     }
 }
