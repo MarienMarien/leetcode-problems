@@ -1,30 +1,32 @@
 public class Solution {
+    private int?[,] _memo;
     public int MinDistance(string word1, string word2) {
         var m = word1.Length;
         var n = word2.Length;
-        var dp = new int[m + 1, n + 1];
-        for (var i = 0; i <= m; i++) {
-            for (var j = 0; j <= n; j++) {
-                if (i == 0)
-                {
-                    dp[i, j] = j;
-                    continue;
-                }
-                if (j == 0) {
-                    dp[i, j] = i;
-                    continue;
-                }
+        _memo = new int?[m + 1,n + 1];
+        return GetMinDistance(word1, word2, m, n);
+    }
 
-                if (word1[i - 1] == word2[j - 1])
-                {
-                    dp[i, j] = dp[i - 1, j - 1];
-                }
-                else
-                {
-                    dp[i, j] = 1+ Math.Min(dp[i - 1,j], Math.Min(dp[i, j - 1], dp[i - 1, j - 1]));
-                }
-            }
+    private int GetMinDistance(string word1, string word2, int w1Id, int w2Id)
+    {
+        if(w1Id == 0)
+            return w2Id;
+        if(w2Id == 0)
+            return w1Id;
+        if(_memo[w1Id, w2Id] != null)
+            return _memo[w1Id, w2Id].Value;
+        if(word1[w1Id - 1] == word2[w2Id - 1])
+        {
+            _memo[w1Id, w2Id] = GetMinDistance(word1, word2, w1Id - 1, w2Id - 1);
+        } 
+        else 
+        {
+            var opIfInsert = 1 + GetMinDistance(word1, word2, w1Id, w2Id - 1);
+            var opIfDelete = 1 + GetMinDistance(word1, word2, w1Id - 1, w2Id);
+            var opIfReplace = 1 + GetMinDistance(word1, word2, w1Id - 1, w2Id - 1);
+
+            _memo[w1Id, w2Id] = Math.Min(opIfInsert, Math.Min(opIfDelete, opIfReplace));
         }
-        return dp[m, n];
+        return _memo[w1Id, w2Id].Value;
     }
 }
