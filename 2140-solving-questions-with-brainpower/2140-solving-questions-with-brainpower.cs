@@ -1,15 +1,16 @@
 public class Solution {
     public long MostPoints(int[][] questions) {
-        int len = questions.Length;
-        long[] pointsPerQuestion = new long[len];
-        long maxPoints = 0;
-        for (int i = len - 1; i >= 0; i--)
+        var pointsEarned = new long[questions.Length];
+        for(var i = pointsEarned.Length - 1; i >= 0; i--)
         {
-            int nextPointId = questions[i][1] + i + 1;
-            pointsPerQuestion[i] = questions[i][0] + (nextPointId < len ? pointsPerQuestion[nextPointId] : 0);
-            pointsPerQuestion[i] = Math.Max(pointsPerQuestion[i], maxPoints);
-            maxPoints = Math.Max(maxPoints, pointsPerQuestion[i]);
+            var points = questions[i][0];
+            var brainpower = questions[i][1];
+            var availableQ = i + brainpower + 1;
+            long currGain = points + (availableQ < questions.Length ? pointsEarned[availableQ] : 0);
+            long prevGain = i < pointsEarned.Length - 1 ? pointsEarned[i + 1] : 0;
+            pointsEarned[i] = Math.Max(currGain, prevGain);
         }
-        return maxPoints;
+
+        return pointsEarned[0];
     }
 }
