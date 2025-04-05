@@ -1,21 +1,17 @@
 public class Solution {
-    private int _sum;
-
     public int SubsetXORSum(int[] nums) {
-        CountSum(nums, 0, 0);
-        return _sum;    
+        return GetXorSum(nums, 0, 0, 0);
     }
 
-    private void CountSum(int[] nums, int currentXor, int startFrom)
+    private int GetXorSum(int[] nums, int sum, int currXor, int startId)
     {
-        if(startFrom >= nums.Length)
-            return;
-        for(var i = startFrom; i < nums.Length; i++)
+        for(var i = startId; i < nums.Length; i++)
         {
-            currentXor = currentXor ^ nums[i];
-            _sum += currentXor;
-            CountSum(nums, currentXor, i + 1);
-            currentXor = currentXor ^ nums[i];
+            currXor ^= nums[i];
+            sum = currXor + GetXorSum(nums, sum, currXor, i + 1);
+            currXor ^= nums[i];
         }
+
+        return sum;
     }
 }
