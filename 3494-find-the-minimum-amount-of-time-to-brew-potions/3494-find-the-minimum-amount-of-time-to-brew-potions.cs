@@ -4,7 +4,7 @@ public class Solution {
         var startTime = 0L;
         var nextStartTime = 0L;
         var wizardsCount = skill.Length;
-        var dp = new long[potionsCount, wizardsCount];
+        var finishTime = new long[potionsCount, wizardsCount];
         var lastPotion = potionsCount - 1;
         for(var potion = 0; potion < potionsCount; potion++)
         {
@@ -15,7 +15,7 @@ public class Solution {
             {
                 var wizardSkills = skill[wizard];
                 currTime += currMana * wizardSkills;
-                dp[potion, wizard] = currTime;
+                finishTime[potion, wizard] = currTime;
 
                 if(potion == lastPotion)
                     continue;
@@ -31,6 +31,6 @@ public class Solution {
             startTime = nextStartTime;
         }
 
-        return dp[potionsCount - 1, wizardsCount - 1];
+        return finishTime[potionsCount - 1, wizardsCount - 1];
     }
 }
