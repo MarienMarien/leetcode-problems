@@ -1,13 +1,6 @@
 public class Solution {
     public long MinTime(int[] skill, int[] mana) {
-        var totalSkills = skill.Sum();
-        var totalTimes = new int[mana.Length];
         var potionsCount = mana.Length;
-        for(var i = 0; i < potionsCount; i++)
-        {
-            totalTimes[i] = totalSkills * mana[i];
-        }
-
         var startTime = 0L;
         var nextStartTime = 0L;
         var wizardsCount = skill.Length;
@@ -23,7 +16,7 @@ public class Solution {
                 var wizardSkills = skill[wizard];
                 currTime += currMana * wizardSkills;
                 dp[potion, wizard] = currTime;
-                
+
                 if(potion == lastPotion)
                     continue;
                 var startTimeCandidate = currTime;
