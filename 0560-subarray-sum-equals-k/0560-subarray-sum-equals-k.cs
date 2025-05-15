@@ -1,17 +1,17 @@
 public class Solution {
     public int SubarraySum(int[] nums, int k) {
-        var res = 0;
-        var map = new Dictionary<int, int>();
-        map.Add(0,1);
-        var sum = 0;
-        for (var i = 0; i < nums.Length; i++)
+        var sums = new Dictionary<int, int> { { 0, 1 } };
+        var runSum = 0;
+        var count = 0;
+        foreach(var n in nums)
         {
-            sum += nums[i];
-            if (map.ContainsKey(sum - k))
-                res += map[sum - k];
-            if (!map.TryAdd(sum, 1))
-                    map[sum]++;
+            runSum += n;
+            if(sums.ContainsKey(runSum - k))
+                count += sums[runSum - k];
+            if(!sums.TryAdd(runSum, 1))
+                sums[runSum] += 1;
         }
-        return res;
+
+        return count;
     }
 }
