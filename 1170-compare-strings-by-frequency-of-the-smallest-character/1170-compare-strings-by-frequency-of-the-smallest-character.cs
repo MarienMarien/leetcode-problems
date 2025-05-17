@@ -4,16 +4,7 @@ public class Solution {
         var fW = new int[wLen];
         for(var i = 0; i < wLen; i++)
         {
-            var w = words[i];
-            var alphabet = new int[26];
-            var smallest = 26;
-            foreach(var ch in w)
-            {
-                var key = ch - 'a';
-                smallest = Math.Min(smallest, key);
-                alphabet[key]++;
-            }
-            fW[i] = alphabet[smallest];
+            fW[i] = GetSmallestCount(words[i]);
         }
 
         Array.Sort(fW);
@@ -22,20 +13,31 @@ public class Solution {
         var result = new int[qLen];
         for(var i = 0; i < qLen; i++)
         {
-            var q = queries[i];
-            var alphabet = new int[26];
-            var smallest = 26;
-            foreach(var ch in q)
-            {
-                var key = ch - 'a';
-                smallest = Math.Min(smallest, key);
-                alphabet[key]++;
-            }
-
-            result[i] = GetQueryResult(fW, alphabet[smallest]);
+            var smallestCount = GetSmallestCount(queries[i]);
+            result[i] = GetQueryResult(fW, smallestCount);
         }
 
         return result;
+    }
+
+    private int GetSmallestCount(string word)
+    {
+        var smallestCount = 0;
+        var smallest = 26;
+        foreach(var ch in word)
+        {
+            var chInt = ch - 'a';
+            if(chInt < smallest)
+            {
+                smallest = chInt;
+                smallestCount = 1;
+            } 
+            else if(chInt == smallest)
+            {
+                smallestCount++;
+            }
+        }
+        return smallestCount;
     }
 
     private int GetQueryResult(int[] fW, int fQ)
