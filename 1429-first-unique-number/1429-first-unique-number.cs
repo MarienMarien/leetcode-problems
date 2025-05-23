@@ -1,40 +1,76 @@
 public class FirstUnique {
-    private IDictionary<int, int> _freq;
-    private Queue<int> _queue;
+    private IDictionary<int, ListNode> _listMap;
+    private ListNode _head;
+    private ListNode _tail;
 
     public FirstUnique(int[] nums)
     {
-        _queue = new Queue<int>();
-        _freq = new Dictionary<int, int>();
+        _listMap = new Dictionary<int, ListNode>();
+        _head = new ListNode();
+        _tail = new ListNode(0, _head);
+        _head.Next = _tail;
 
-        foreach (var n in nums) {
-            if (_freq.ContainsKey(n))
+        foreach (var n in nums)
+        {
+            if (_listMap.ContainsKey(n))
             {
-                _freq[n]++;
+                RemoveNode(n);
                 continue;
             }
-            _freq.Add(n, 1);
-            _queue.Enqueue(n);
+
+            var prevNode = _tail.Prev;
+            var newNode = new ListNode(n, prevNode, _tail);
+            prevNode.Next = newNode;
+            _tail.Prev = newNode;
+            _listMap.Add(n, newNode);
         }
     }
 
     public int ShowFirstUnique()
     {
-        while (_queue.Count > 0 && _freq[_queue.Peek()] > 1)
-            _queue.Dequeue();
-        return _queue.Count > 0 ? _queue.Peek() : -1;
+        return _head.Next == _tail ? -1 : _head.Next.Value;
     }
 
     public void Add(int value)
     {
-        if (_freq.ContainsKey(value))
+        if (_listMap.ContainsKey(value))
         {
-            _freq[value]++;
+            RemoveNode(value);
             return;
         }
 
-        _freq.Add(value, 1);
-        _queue.Enqueue(value);
+        var prevNode = _tail.Prev;
+        var newNode = new ListNode(value, prevNode, _tail);
+        prevNode.Next = newNode;
+        _tail.Prev = newNode;
+        _listMap.Add(value, newNode);
+    }
+
+    private void RemoveNode(int n)
+    {
+        if (_listMap[n] == null)
+            return;
+
+        var currPrev = _listMap[n].Prev;
+        var newNext = _listMap[n].Next;
+        currPrev.Next = newNext;
+        newNext.Prev = currPrev;
+
+        _listMap[n] = null;
+    }
+}
+
+public class ListNode 
+{
+    public int Value;
+    public ListNode Next;
+    public ListNode Prev;
+
+    public ListNode(int value = 0, ListNode prev = null, ListNode next = null)
+    {
+        Value = value;
+        Next = next;
+        Prev = prev; 
     }
 }
 
