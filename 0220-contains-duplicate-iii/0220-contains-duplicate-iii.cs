@@ -1,27 +1,23 @@
 public class Solution {
     public bool ContainsNearbyAlmostDuplicate(int[] nums, int indexDiff, int valueDiff) {
         var buckets = new Dictionary<int, int>();
-        var min = nums.Min();
         var bucketSize = valueDiff + 1;
-        var maxBuckets = indexDiff + 1;
         for(var i = 0; i < nums.Length; i++)
         {
-            var label = (nums[i] - min) / bucketSize;
-
-            if(buckets.ContainsKey(label))
+            var bucket = (int)Math.Floor((decimal)nums[i] / bucketSize);
+            if(buckets.ContainsKey(bucket))
                 return true;
-            var leftLabel = label - 1;
-            if(buckets.ContainsKey(leftLabel) && Math.Abs(buckets[leftLabel] - nums[i]) <= valueDiff)
+            var leftBucket = bucket - 1;
+            if(buckets.ContainsKey(leftBucket) && Math.Abs(nums[i] - buckets[leftBucket]) < bucketSize)
                 return true;
-            var rightLabel = label + 1;
-            if(buckets.ContainsKey(rightLabel) && Math.Abs(buckets[rightLabel] - nums[i]) <= valueDiff)
+            var rightBucket = bucket + 1;
+            if(buckets.ContainsKey(rightBucket) && Math.Abs(nums[i] - buckets[rightBucket]) < bucketSize)
                 return true;
-
-            buckets[label] = nums[i];
-            if(buckets.Count == maxBuckets)
+            buckets[bucket] = nums[i];
+            if(i >= indexDiff)
             {
-                var remLabel = (nums[i - indexDiff] - min) / bucketSize;
-                buckets.Remove(remLabel);
+                var toRem = nums[i - indexDiff] / bucketSize;
+                buckets.Remove(toRem);
             }
         }
         return false;
