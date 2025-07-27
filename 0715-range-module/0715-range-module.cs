@@ -1,80 +1,81 @@
 public class RangeModule {
-    private List<int[]> _ranges;
+    private SortedSet<Range> _ranges;
 
-    public RangeModule() {
-        _ranges = new List<int[]>();
+    public RangeModule()
+    {
+        _ranges = new SortedSet<Range>(new RangeComparer());
     }
-    
-    public void AddRange(int left, int right) {
-        var newInterval = new int[] { left, right };
-        var id = 0;
-        var newRanges = new List<int[]>();
-        while(id < _ranges.Count && _ranges[id][1] < newInterval[0])
+
+    public void AddRange(int left, int right)
+    {
+        var overlaps = _ranges.GetViewBetween(new Range(left - 1, left), new Range(right - 1, right)).ToList();
+        if (overlaps.Count == 0)
         {
-            newRanges.Add(_ranges[id]);
-            id++;
+            _ranges.Add(new Range(left, right - 1));
+            return;
         }
-        while(id < _ranges.Count && _ranges[id][0] <= newInterval[1])
+        var newLeft = Math.Min(left, overlaps[0].Start);
+        var newRight = Math.Max(right - 1, overlaps[^1].End);
+        foreach (var r in overlaps)
         {
-            newInterval[0] = Math.Min(newInterval[0], _ranges[id][0]);
-            newInterval[1] = Math.Max(newInterval[1], _ranges[id][1]);
-            id++;
+            _ranges.Remove(r);
         }
-        newRanges.Add(newInterval);
-        for(; id < _ranges.Count; id++)
-        {
-            newRanges.Add(_ranges[id]);
-        }
-        _ranges = newRanges;
+        _ranges.Add(new Range(newLeft, newRight));
     }
-    
-    public bool QueryRange(int left, int right) {
-        var start = 0;
-        var end = _ranges.Count - 1;
-        while(start <= end)
-        {
-            var mid = (start + end) / 2;
-            var currRange = _ranges[mid];
-            if(currRange[0] >= right)
-            {
-                end = mid - 1;
-            } 
-            else if(currRange[1] <= left)
-            {
-                start = mid + 1;
-            } 
-            else 
-            {
-                return currRange[0] <= left && right <= currRange[1];
-            }
-        }
-        return false;
+
+    public bool QueryRange(int left, int right)
+    {
+        var rightBound = right - 1;
+        var overlap = _ranges.GetViewBetween(new Range(left, left), new Range(rightBound, rightBound));
+        if (overlap.Count != 1)
+            return false;
+        var overlapRange = overlap.First();
+        return overlapRange.Start <= left && rightBound <= overlapRange.End;
     }
-    
-    public void RemoveRange(int left, int right) {
-        var n = _ranges.Count;
-        var updatedRanges = new List<int[]>();
-        for(var i = 0; i < n; i++)
+
+    public void RemoveRange(int left, int right)
+    {
+        var overlaps = _ranges.GetViewBetween(new Range(left, left), new Range(right - 1, right - 1)).ToList();
+        if (overlaps.Count == 0)
+            return;
+            
+        foreach (var r in overlaps)
         {
-            var currRange = _ranges[i];
-            if(right < currRange[0] || currRange[1] < left)
-            {
-                updatedRanges.Add(currRange);
-                continue;
-            }
-
-            if(currRange[0] < left)
-            {
-                updatedRanges.Add(new int[] { currRange[0], left });
-
-            }
-            if(right < currRange[1])
-            {
-                updatedRanges.Add(new int[] { right, currRange[1] });
-            }
+            _ranges.Remove(r);
         }
 
-        _ranges = updatedRanges;
+        if (overlaps[0].Start < left)
+        {
+            _ranges.Add(new Range(overlaps[0].Start, left - 1));
+        }
+
+        if (overlaps[^1].End > right)
+        {
+            _ranges.Add(new Range(right, overlaps[^1].End));
+        }
+    }
+
+    class Range
+    {
+        public int Start;
+        public int End;
+        public Range(int s, int e)
+        {
+            Start = s;
+            End = e;
+        }
+    }
+
+    class RangeComparer : IComparer<Range>
+    {
+        public int Compare(Range x, Range y)
+        {
+            if (x.End < y.Start)
+                return -1;
+            if (y.End < x.Start)
+                return 1;
+            return 0;
+        }
     }
 }
 
