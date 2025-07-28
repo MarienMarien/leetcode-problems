@@ -1,4 +1,4 @@
-<h2><a href="https://leetcode.com/problems/find-and-replace-in-string/">833. Find And Replace in String</a></h2><h3>Medium</h3><hr><div><p>You are given a <strong>0-indexed</strong> string <code>s</code> that you must perform <code>k</code> replacement operations on. The replacement operations are given as three <strong>0-indexed</strong> parallel arrays, <code>indices</code>, <code>sources</code>, and <code>targets</code>, all of length <code>k</code>.</p>
+<h2><a href="https://leetcode.com/problems/find-and-replace-in-string/">833. Find And Replace in String</a></h2><h3>Medium</h3><hr><p>You are given a <strong>0-indexed</strong> string <code>s</code> that you must perform <code>k</code> replacement operations on. The replacement operations are given as three <strong>0-indexed</strong> parallel arrays, <code>indices</code>, <code>sources</code>, and <code>targets</code>, all of length <code>k</code>.</p>
 
 <p>To complete the <code>i<sup>th</sup></code> replacement operation:</p>
 
@@ -8,12 +8,12 @@
 	<li>Otherwise if it does occur, <strong>replace</strong> that substring with <code>targets[i]</code>.</li>
 </ol>
 
-<p>For example, if <code>s = "<u>ab</u>cd"</code>, <code>indices[i] = 0</code>, <code>sources[i] = "ab"</code>, and <code>targets[i] = "eee"</code>, then the result of this replacement will be <code>"<u>eee</u>cd"</code>.</p>
+<p>For example, if <code>s = &quot;<u>ab</u>cd&quot;</code>, <code>indices[i] = 0</code>, <code>sources[i] = &quot;ab&quot;</code>, and <code>targets[i] = &quot;eee&quot;</code>, then the result of this replacement will be <code>&quot;<u>eee</u>cd&quot;</code>.</p>
 
 <p>All replacement operations must occur <strong>simultaneously</strong>, meaning the replacement operations should not affect the indexing of each other. The testcases will be generated such that the replacements will <strong>not overlap</strong>.</p>
 
 <ul>
-	<li>For example, a testcase with <code>s = "abc"</code>, <code>indices = [0, 1]</code>, and <code>sources = ["ab","bc"]</code> will not be generated because the <code>"ab"</code> and <code>"bc"</code> replacements overlap.</li>
+	<li>For example, a testcase with <code>s = &quot;abc&quot;</code>, <code>indices = [0, 1]</code>, and <code>sources = [&quot;ab&quot;,&quot;bc&quot;]</code> will not be generated because the <code>&quot;ab&quot;</code> and <code>&quot;bc&quot;</code> replacements overlap.</li>
 </ul>
 
 <p>Return <em>the <strong>resulting string</strong> after performing all replacement operations on </em><code>s</code>.</p>
@@ -22,21 +22,23 @@
 
 <p>&nbsp;</p>
 <p><strong class="example">Example 1:</strong></p>
-<img alt="" src="https://assets.leetcode.com/uploads/2021/06/12/833-ex1.png" style="width: 411px; height: 251px;">
-<pre><strong>Input:</strong> s = "abcd", indices = [0, 2], sources = ["a", "cd"], targets = ["eee", "ffff"]
-<strong>Output:</strong> "eeebffff"
+<img alt="" src="https://assets.leetcode.com/uploads/2021/06/12/833-ex1.png" style="width: 411px; height: 251px;" />
+<pre>
+<strong>Input:</strong> s = &quot;abcd&quot;, indices = [0, 2], sources = [&quot;a&quot;, &quot;cd&quot;], targets = [&quot;eee&quot;, &quot;ffff&quot;]
+<strong>Output:</strong> &quot;eeebffff&quot;
 <strong>Explanation:</strong>
-"a" occurs at index 0 in s, so we replace it with "eee".
-"cd" occurs at index 2 in s, so we replace it with "ffff".
+&quot;a&quot; occurs at index 0 in s, so we replace it with &quot;eee&quot;.
+&quot;cd&quot; occurs at index 2 in s, so we replace it with &quot;ffff&quot;.
 </pre>
 
 <p><strong class="example">Example 2:</strong></p>
-<img alt="" src="https://assets.leetcode.com/uploads/2021/06/12/833-ex2-1.png" style="width: 411px; height: 251px;">
-<pre><strong>Input:</strong> s = "abcd", indices = [0, 2], sources = ["ab","ec"], targets = ["eee","ffff"]
-<strong>Output:</strong> "eeecd"
+<img alt="" src="https://assets.leetcode.com/uploads/2021/06/12/833-ex2-1.png" style="width: 411px; height: 251px;" />
+<pre>
+<strong>Input:</strong> s = &quot;abcd&quot;, indices = [0, 2], sources = [&quot;ab&quot;,&quot;ec&quot;], targets = [&quot;eee&quot;,&quot;ffff&quot;]
+<strong>Output:</strong> &quot;eeecd&quot;
 <strong>Explanation:</strong>
-"ab" occurs at index 0 in s, so we replace it with "eee".
-"ec" does not occur at index 2 in s, so we do nothing.
+&quot;ab&quot; occurs at index 0 in s, so we replace it with &quot;eee&quot;.
+&quot;ec&quot; does not occur at index 2 in s, so we do nothing.
 </pre>
 
 <p>&nbsp;</p>
@@ -51,4 +53,3 @@
 	<li><code>s</code> consists of only lowercase English letters.</li>
 	<li><code>sources[i]</code> and <code>targets[i]</code> consist of only lowercase English letters.</li>
 </ul>
-</div>
